@@ -1,0 +1,20 @@
+extends: default
+font:
+  catalog:
+    Noto Serif:
+      normal: GEM_FONTS_DIR/notoserif-regular-subset.ttf
+      bold: GEM_FONTS_DIR/notoserif-bold-subset.ttf
+      italic: GEM_FONTS_DIR/notoserif-italic-subset.ttf
+      bold_italic: GEM_FONTS_DIR/notoserif-bold_italic-subset.ttf
+    M+ 1mn:
+      normal: GEM_FONTS_DIR/mplus1mn-regular-subset.ttf
+      bold: GEM_FONTS_DIR/mplus1mn-bold-subset.ttf
+      italic: GEM_FONTS_DIR/mplus1mn-italic-subset.ttf
+      bold_italic: GEM_FONTS_DIR/mplus1mn-bold_italic-subset.ttf
+    Gothic A1:
+      normal: GothicA1-Regular.ttf
+      bold: GothicA1-Bold.ttf
+      italic: GothicA1Italic-Regular.ttf
+      bold_italic: GothicA1-BoldItalic.ttf
+kbd_font_family: Gothic A1
+kbd_font_style: Normal

@@ -1,0 +1,138 @@
+:themesdir: themes
+:fontsdir: fonts
+:toc:
+:toclevels: 3
+:sectnums!:
+:sectids!:
+:chapter-label:
+:doctype: book
+:encoding: utf-8
+:lang: EN
+:experimental:
+:icons: font
+:pdf-page-size: [8.25in, 11.69in]
+//:title-page-background-image: image:images/6809Cover.png[fit=scale-down]
+:front-cover-image: image:images/MACRO80C-USERGUIDE-COVER.pdf[fit=contain]
+:mu: µ
+:ohm: Ω
+:dot: *
+:union: ∩
+:degree: °
+:C: ©
+:arrow: →
+:shift:
+:sourcedir: code
+:source-highlighter: rouge
+
+<<<
+:numbered!:
+[colophon]
+
+image::images/page2.png[fit=contain]
+
+<<<
+
+:sectids!:
+:numbered!:
+// include::Assembler.adoc[]
+
+= MACRO-80C
+
+Assembler Reference Manual
+Disk Based Macro Assembler for
+Radio Shack’s Color Computer 
+
+from
+The Micro Works, Inc
+
+Written by
+Andrew E. Phelps
+
+== Copyright Notice:
+
+This manual and the software that it describes copyright (c) 1982 by The Micro Works, Inc. Reproduction of this manual, or any part of it, for any purpose whatever, is prohibited. The software described may be duplicated for backup purposes only, and duplication for any other purpose is prohibited. The software may not be sold, lent, or given away.
+
+THE MICRO WORKS, INC.
+Mailing Address:
+PO Box 1110
+Del Mar, CA 92014
+
+UPS shipping address:
+1942 s. El Camino Real
+Encinitas, CA 92024
+
+Redaction and revision activity done by Pete Willard - end goal; clarity.
+
+
+== INTRODUCTION
+
+This manual describes MACRO-80C, a macro assembler for the Color Computer. This assembler is an easy-to-use, yet powerful tool for the assembly language programmer. Its purpose is to read and assemble a file or files which have been written using a text editor. This is the "source program" in 6809 assembly language. It produces a file which is the "object program" in machine language. It also produces a "source listing" to a printer or to the screen which shows both the assembly and machine language and is used in debugging your program.
+
+Assembly language is the language in which you can directly control the operation of your Color Computer. You can write programs that run thousands of times faster, take up less memory, and still do more than the same program written in Basic. The only catch is that it is harder to learn, but with a few good books and a lot of experimentation any programmer can discover this wonderful world in which almost anything can be done.
+
+For those already experienced in using assemblers (if you're still reading this far) KEEP READING! You'll be surprised. This assembler has a lot of interesting features which.you will eventually want to take advantage of. Some may sound far-fetched at first, but you will find that they are there because they are useful.
+
+
+[WARNING]
+Do not write on the disk! If any files are added to the disk, there is a possibility that the directory will be incorrectly written and that the disk will no longer be usable.
+
+
+== SECTION I - THE BASICS
+
+=== RUNNING THE ASSEMBLER
+
+The first thing to do is to write-protect the disk! Do not add any files to the assembler disk, as any updates to the directory could be written incorrectly and render the disk useless. Now do a BACKUP to another disk, and store away the original in a safe place.
+
+To run the assembler, you must first have something to assemble. This is called the "source program". It is a disk file which has been written using a text editor; refer to your text editor manual for instruction on doing this. For trying out the assembler, you may want to use one of the several example programs included on your disk;  these are the ones with names ending in `/TXT`.
+
+To use the assembler, type RUN"AS (note that the ending quote is not needed). This is a short Basic program which will automatically load file `AS%/BIN` from Drive 0 into the graphics pages. AS will ask for an input file name. If the file name ends in `/TXT`, you do not need to type in the `/TXT` as that will be assumed.
+
+You will next be asked for a binary file name. This is what the assembler should name the output file or "object file". It is often the same name as the input file, only with `/BIN` instead of `/TXT`. If you leave off the `/BIN`, it will be assumed. If you do not wish to create a binary file and are only assembling for the listing or to check for errors, then just hit kbd:[ENTER].
+
+The assembler will next ask for options. If all you want to do is to produce a binary file, simply hit kbd:[ENTER]. The options LDS will get you a listing and symbol table; the "D" stands for "delay" and will slow down the screen output. To get a listing to the printer, see the section on "LISTING TO A PRINTER". For other options, see the section on "ASSEMBLER OPTIONS".
+
+After entering the options, the assembler will run. Pressing kbd:[BREAK] will abort the assembly; the space-bar will stop the listing and allow you to single step. Remember "that the keyboard is not being scanned during disk I/O so you may have to hold down a key for a second or so. "S" and "F" will slow down or speed up a listing, and pressing them repeatedly will slow it down or speed it up even more.
+
+If a file already exists by the same name as the binary file which is to be created, the message appears, "OLD BINARY WILL BE DELETED". If you then realize that you do not wish the old file deleted, press kbd:[BREAK] and hold it until the assembler stops, since the old file will not be removed before the assembler starts pass 2.
+
+The interaction with AS can easily be modified, as this portion of the assembler is in Basic. For example, you could make a version of AS which always gives the binary file the same name as the input file or a version which always selects certain options
+
+The example below shows what will appear on the screen when you assemble the sample program DISPLAY.
+
+<<<
+
+[source,basic]
+----
+RUN" AS
+WORLD'S BEST ASSEMBLER
+(C) 1982 THE MICRO WORKS
+INPUT FILE? DISPLAY
+BINARY FILE? DISPLAY
+OPTIONS?
+******************************
+**    6809 MACRO ASSEMBLER  **
+**     BY ANDREW PHELPS     **
+** (C) 1982 THE MICRO WORKS **
+******************************
+PAGE 0001 DISPLAY
+NO ERRORS FOUND
+ASSEMBLY DONE
+OK
+----
+
+
+=== ASSEMBLER OPTIONS
+When the assembler asks for options, any of the following may be entered (in any order). Any other character in the option string will generate a message and be ignored by the assembler.
+
+
+[%autowidth]
+|===
+|L|Listing. If this is not specified, only error lines are listed.
+|S|Symbol table. This gives a sorted table of symbols and their values. Local labels are not included in the symbol listing.
+|X|Cross reference. This overrides option S. Each symbol is listed with all line numbers where it is referenced.
+|M|List macro expansions. This is useful for debugging macros; normally only calls to macros are listed.
+|W|Long branch warning. After debugging a program, use this option to generate an error wherever a short branch could be used in place of a long one.
+|Z|Zero byte error. See the section on embedding machine language in Basic programs.
+|E|Error halt. This puts the assembler into single step mode whenever an error is encountered.
+|D|Delay output. This slows down the listing to the screen. It may be. sped up again by pressing "F" several times once the listing starts.
+|===
