@@ -40,6 +40,8 @@ Install Rouge with the following command: `gem install rouge`
 
 I use the following command to create the PDF document output:
 
+`asciidoctor-pdf --theme themes/pdf-theme.yml -a pdf-fontsdir=fonts macro80cuser.adoc -o macro80c_userguide.pdf`
+
 See the Powershell script for the CLI statements used to create the PDF 
 
 NOTE: Just the USER GUIDE is available for now.  The Assembler Manual is in the works.
