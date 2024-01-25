@@ -42,4 +42,6 @@ I use the following command to create the PDF document output:
 
 See the Powershell script for the CLI statements used to create the PDF 
 
+NOTE: Just the USER GUIDE is available for now.  The Assembler Manual is in the works.
+
 
